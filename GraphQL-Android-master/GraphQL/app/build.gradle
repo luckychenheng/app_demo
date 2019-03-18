@@ -21,7 +21,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField('String', "AUTH_TOKEN", '"0ed6b767b383daa71210fb01750cf58d4aa23eb2"')
+        it.buildConfigField('String', "AUTH_TOKEN", '"04ce986b21c3d715cec24d4868879baf2128ad2e"')
     }
     buildToolsVersion '26.0.2'
 }

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+      http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+      http://www.springframework.org/schema/context  
+      http://www.springframework.org/schema/context/spring-context-4.3.xsd  
+      http://www.springframework.org/schema/mvc  
+      http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+      http://www.springframework.org/schema/aop
+      http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+      http://www.springframework.org/schema/tx 
+      http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!--注解驱动器 -->
+	<mvc:annotation-driven />
+	<!-- 扫描带有annotation的包 -->
+	<context:component-scan base-package="microResource" />
+
+	<!-- 加载数据库的properties文件 -->
+	<context:property-placeholder location="classpath:config/db.properties" />
+
+	<!-- 登陆数据库 ，c3p0,推荐使用这个 涉及到的包:c390-0.9.5.2 -->
+	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
+		destroy-method="close"> -->
+	<!-- <property name="driverClass" value="${jdbc.driver}" /> -->
+	<!-- <property name="jdbcUrl" value="${jdbc.url}" /> -->
+	<!-- <property name="user" value="${jdbc.username}" /> -->
+	<!-- <property name="password" value="${jdbc.password}" /> -->
+	<!-- </bean> -->
+
+
+
+
+
+
+
+
+
+	<!-- dbcp的连接池 涉及到的包commons-dbcp;commons-pool -->
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
+		destroy-method="close"> -->
+	<!-- <property name="driverClassName" value="${jdbc.driver}" /> -->
+	<!-- <property name="url" value="${jdbc.url}" /> -->
+	<!-- <property name="username" value="${jdbc.username}" /> -->
+	<!-- <property name="password" value="${jdbc.password}" /> -->
+	<!-- </bean> -->
+
+
+
+
+
+
+	<!-- BoneCP的dataSource 涉及到的包：bonecp-0.7.1;google-collection;log-4j-1.2.14;slf4j-api-1.6.1; -->
+	<!-- <bean id="dataSource" -->
+	<!-- class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy"> -->
+	<!-- <property name="targetDataSource" ref="mainDataSource" /> -->
+	<!-- </bean> -->
+	<!-- <bean id="mainDataSource" class="com.jolbox.bonecp.BoneCPDataSource" -->
+	<!-- destroy-method="close"> -->
+	<!-- <property name="driverClass" value="com.mysql.jdbc.Driver" /> -->
+	<!-- <property name="jdbcUrl" value="${jdbc.url}" /> -->
+	<!-- <property name="username" value="root" /> -->
+	<!-- <property name="password" value="123456" /> -->
+	<!-- <property name="idleConnectionTestPeriod" value="60" /> -->
+	<!-- <property name="idleMaxAge" value="240" /> -->
+	<!-- <property name="maxConnectionsPerPartition" value="60" /> -->
+	<!-- <property name="minConnectionsPerPartition" value="20" /> -->
+	<!-- <property name="partitionCount" value="3" /> -->
+	<!-- <property name="acquireIncrement" value="10" /> -->
+	<!-- <property name="statementsCacheSize" value="50" /> -->
+	<!-- <property name="releaseHelperThreads" value="3" /> -->
+	<!-- </bean> -->
+
+
+
+	<!-- Driuid的DataSource配置，涉及的包druid-1.0.31，比较推荐这个 同时需要在web.xml中配置DruidStatView的servlet -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+
+		<property name="maxActive" value="20" />
+		<property name="initialSize" value="1" />
+		<property name="maxWait" value="60000" />
+		<property name="minIdle" value="1" />
+
+		<property name="timeBetweenEvictionRunsMillis" value="3000" />
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+
+		<property name="validationQuery" value="SELECT 'x' FROM DUAL" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- mysql 不支持 poolPreparedStatements -->
+		<!--<property name="poolPreparedStatements" value="true" /> -->
+		<!--<property name="maxPoolPreparedStatementPerConnectionSize" value="20" 
+			/> -->
+
+		<!-- 开启Druid的监控统计功能 -->
+		<property name="filters" value="stat" />
+
+	</bean>
+
+
+	<!-- Hikari Datasource 涉及到的包HikariCP-2.6.3.jar -->
+	<!-- <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="shutdown"> -->
+	<!-- <property name="driverClassName" value="${jdbc.driver}" /> 无需指定，除非系统无法自动识别 -->
+	<!-- <property name="jdbcUrl" value="jdbc:MySQL://localhost:3306/test?serverTimezone=UTC" 
+		/> -->
+	<!-- <property name="username" value="root" /> -->
+	<!-- <property name="password" value="123456" /> -->
+	<!-- 连接只读数据库时配置为true， 保证安全 -->
+	<!-- <property name="readOnly" value="false" /> -->
+	<!-- 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒 -->
+	<!-- <property name="connectionTimeout" value="30000" /> -->
+	<!-- 一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟 -->
+	<!-- <property name="idleTimeout" value="600000" /> -->
+	<!-- 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒，参考mysql 
+		wait_timeout参数（show variables like '%timeout%';） -->
+	<!-- <property name="maxLifetime" value="1800000" /> -->
+	<!-- 连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count) -->
+	<!-- <property name="maximumPoolSize" value="15" /> -->
+	<!-- </bean> -->
+
+
+
+
+
+
+	<!-- 配置sessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">${jdbc.hbm2ddl.auto}</prop>
+				<prop key="hibernate.show_sql">${jdbc.show_sql}</prop>
+				<prop key="hibernate.format_sql">${jdbc.format_sql}</prop>
+				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>microResource.model</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 视图解析器 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="cache" value="true" />
+		<property name="prefix" value="/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	<!-- 上传 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="10485760000" />
+		<property name="maxInMemorySize" value="40960" />
+	</bean>
+
+
+
+
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 采用spring提供的session -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!-- 配置事务异常封装 -->
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+	<bean id="Interception" class="microResource.aop.Interceptor"></bean>
+
+	<aop:config>
+		<!-- 通过aop定义事务增强切面 -->
+		<aop:pointcut expression="execution(* microResource..*.*(..))"
+			id="pointcut" />
+		<aop:advisor advice-ref="advice" pointcut-ref="pointcut" />
+		<aop:aspect id="Ascept" ref="Interception">
+			<aop:before method="before"
+				pointcut="execution(* microResource.service..*.*(..))" />
+		</aop:aspect>
+	</aop:config>
+	<tx:advice id="advice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="query*" read-only="true" propagation="REQUIRED" />
+			<tx:method name="find*" read-only="true" propagation="REQUIRED" />
+			<tx:method name="search*" read-only="true" propagation="REQUIRED" />
+			<tx:method name="get*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+</beans>

@@ -28,7 +28,8 @@
         android:hint="@string/repository_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/github_image_view" />
+        app:layout_constraintTop_toBottomOf="@id/github_image_view"
+        android:text="app_demo"/>
 
     <EditText
         android:id="@+id/owner_name_edittext"
@@ -39,7 +40,8 @@
         android:layout_marginTop="15dp"
         android:hint="@string/owner_name_hint"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repo_name_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/repo_name_edittext"
+        android:text="luckychenheng"/>
 
     <Button
         android:id="@+id/button_find"
