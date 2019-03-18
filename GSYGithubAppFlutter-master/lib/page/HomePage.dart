@@ -12,13 +12,33 @@ import 'package:gsy_github_app_flutter/widget/GSYTabBarWidget.dart';
 import 'package:gsy_github_app_flutter/widget/GSYTitleBar.dart';
 import 'package:gsy_github_app_flutter/widget/HomeDrawer.dart';
 
+class HomePage extends StatefulWidget {
+  static final String sName = "home";
+  @override
+  HomePageState createState() => new HomePageState();
+}
+
 /**
  * 主页
  * Created by guoshuyu
  * Date: 2018-07-16
  */
-class HomePage extends StatelessWidget {
-  static final String sName = "home";
+class HomePageState extends State<HomePage> {
+
+  var _centerIndex = 0;
+
+  final _key = new GlobalKey<ScaffoldState>();
+  var _body;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   /// 单击提示退出
   Future<bool> _dialogExitApp(BuildContext context) {
@@ -49,35 +69,78 @@ class HomePage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    _initPage();
     List<Widget> tabs = [
       _renderTab(GSYICons.MAIN_DT, CommonUtils.getLocale(context).home_dynamic),
       _renderTab(GSYICons.MAIN_QS, CommonUtils.getLocale(context).home_trend),
       _renderTab(GSYICons.MAIN_MY, CommonUtils.getLocale(context).home_my),
     ];
-    return WillPopScope(
-      onWillPop: () {
-        return _dialogExitApp(context);
-      },
-      child: new GSYTabBarWidget(
-        drawer: new HomeDrawer(),
-        type: GSYTabBarWidget.BOTTOM_TAB,
-        tabItems: tabs,
-        tabViews: [
-          new DynamicPage(),
-          new TrendPage(),
-          new MyPage(),
+//    return WillPopScope(
+//      onWillPop: () {
+//        return _dialogExitApp(context);
+//      },
+//      child: new GSYTabBarWidget(
+//        drawer: new HomeDrawer(),
+//        type: GSYTabBarWidget.BOTTOM_TAB,
+//        tabItems: tabs,
+//        tabViews: [
+//          new DynamicPage(),
+//          new TrendPage(),
+//          new MyPage(),
+//        ],
+//        backgroundColor: GSYColors.primarySwatch,
+//        indicatorColor: Color(GSYColors.white),
+//        title: GSYTitleBar(
+//          GSYLocalizations.of(context).currentLocalized.app_name,
+//          iconData: GSYICons.MAIN_SEARCH,
+//          needRightLocalIcon: true,
+//          onPressed: () {
+//            NavigatorUtils.goSearchPage(context);
+//          },
+//        ),
+//      ),
+//    );
+
+    return new WillPopScope(child: new Scaffold(
+      key: _key,
+      appBar: new AppBar(
+        title: new Text("title"),
+        centerTitle: true,
+      ), //头部的标题AppBar
+//      drawer: new Drawer(
+//        child: new DrawerPage(),
+//      ),
+      bottomNavigationBar: new BottomNavigationBar(
+        items: [
+          new BottomNavigationBarItem(
+              icon: new Icon(Icons.home), title: new Text("首页")),
+          new BottomNavigationBarItem(
+              icon: new Icon(Icons.home), title: new Text("赚赚")),
+          new BottomNavigationBarItem(
+              icon: new Icon(Icons.home), title: new Text("我的")),
         ],
-        backgroundColor: GSYColors.primarySwatch,
-        indicatorColor: Color(GSYColors.white),
-        title: GSYTitleBar(
-          GSYLocalizations.of(context).currentLocalized.app_name,
-          iconData: GSYICons.MAIN_SEARCH,
-          needRightLocalIcon: true,
-          onPressed: () {
-            NavigatorUtils.goSearchPage(context);
-          },
-        ),
+        currentIndex: _centerIndex,
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          setState(() {
+            _centerIndex = index;
+          });
+        },
       ),
+      body: _body,
+    ), onWillPop: () {
+      print("===> onWillPop <===");
+    });
+  }
+
+  _initPage() {
+    _body = new IndexedStack(
+      children: <Widget>[
+        new DynamicPage(),
+        new TrendPage(),
+        new MyPage(),
+      ],
+      index: _centerIndex,
     );
   }
 }

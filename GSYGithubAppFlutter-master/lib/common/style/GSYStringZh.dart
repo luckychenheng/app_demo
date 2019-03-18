@@ -117,9 +117,9 @@ class GSYStringZh extends GSYStringBase {
   String load_more_text = "正在加载更多";
 
   @override
-  String home_dynamic = "动态";
+  String home_dynamic = "首页";
   @override
-  String home_trend = "趋势";
+  String home_trend = "赚赚";
   @override
   String home_my = "我的";
 
