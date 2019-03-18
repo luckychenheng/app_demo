@@ -12,7 +12,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 /**
- * Created by Amanjeet Singh on 27/1/18.
+ * Created by lucky on 19/3/14
  */
 interface ApiInterface {
 

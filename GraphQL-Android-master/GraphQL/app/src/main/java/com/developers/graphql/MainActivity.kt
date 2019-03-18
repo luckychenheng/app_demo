@@ -18,7 +18,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.repo_layout.*
 import java.util.logging.Logger
 
-
+/**
+ * Created by lucky on 19/3/14
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var gitApi: ApiInterface
