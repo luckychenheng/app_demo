@@ -1,0 +1,2 @@
+include ':app', ':audioplayer', ':locationmanager', ':sqlitedatabase', ':videostreaming', ':sensors', ':networking',
+        ':customcamera', ':o_notifications'
